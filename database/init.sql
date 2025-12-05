@@ -1,10 +1,7 @@
--- Crear base de datos
+
 CREATE DATABASE IF NOT EXISTS reparacion_celulares;
 USE reparacion_celulares;
 
--- ============================================
--- TABLA: usuarios
--- ============================================
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -15,9 +12,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- ============================================
--- TABLA: servicios
--- ============================================
 CREATE TABLE IF NOT EXISTS servicios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
@@ -25,7 +19,6 @@ CREATE TABLE IF NOT EXISTS servicios (
     precio_estimado DECIMAL(10,2) DEFAULT 0.00
 );
 
--- Insert de servicios básicos (solo si la tabla está vacía)
 INSERT INTO servicios (nombre, descripcion, precio_estimado)
 SELECT * FROM (SELECT 'Cambio de pantalla' AS nombre, 'Reemplazo de pantalla rota o dañada.' AS descripcion, 800.00 AS precio_estimado) AS tmp
 WHERE NOT EXISTS (SELECT 1 FROM servicios WHERE nombre = 'Cambio de pantalla')
@@ -51,16 +44,11 @@ SELECT * FROM (SELECT 'Diagnóstico general', 'Revisión completa del equipo.', 
 WHERE NOT EXISTS (SELECT 1 FROM servicios WHERE nombre = 'Diagnóstico general')
 LIMIT 1;
 
--- ============================================
--- TABLA: modelos_celulares
--- ============================================
 CREATE TABLE IF NOT EXISTS modelos_celulares (
     id INT AUTO_INCREMENT PRIMARY KEY,
     marca VARCHAR(100) NOT NULL,
     modelo VARCHAR(100) NOT NULL
 );
-
--- Inserts básicos (solo si la tabla está vacía)
 INSERT INTO modelos_celulares (marca, modelo)
 SELECT * FROM (SELECT 'Apple' AS marca, 'iPhone 11' AS modelo) AS tmp
 WHERE NOT EXISTS (SELECT 1 FROM modelos_celulares WHERE marca = 'Apple' AND modelo = 'iPhone 11')
@@ -91,9 +79,6 @@ SELECT * FROM (SELECT 'Motorola', 'Moto G9 Power') AS tmp
 WHERE NOT EXISTS (SELECT 1 FROM modelos_celulares WHERE marca = 'Motorola' AND modelo = 'Moto G9 Power')
 LIMIT 1;
 
--- ============================================
--- TABLA: citas
--- ============================================
 CREATE TABLE IF NOT EXISTS citas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -110,9 +95,6 @@ CREATE TABLE IF NOT EXISTS citas (
     FOREIGN KEY (modelo_id) REFERENCES modelos_celulares(id)
 );
 
--- ============================================
--- TABLA: reparaciones
--- ============================================
 CREATE TABLE IF NOT EXISTS reparaciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     cita_id INT NOT NULL,
