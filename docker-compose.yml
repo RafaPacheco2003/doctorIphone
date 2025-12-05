@@ -1,0 +1,46 @@
+services:
+
+
+  php:
+    build: .
+    container_name: php_app
+    ports:
+      - "8081:80"
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      - DB_HOST=mysql
+      - DB_NAME=reparacion_celulares
+      - DB_USER=appuser
+      - DB_PASSWORD=apppassword
+      - DB_CHARSET=utf8mb4
+    depends_on:
+      - mysql
+    networks:
+      - app_network
+
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=reparacion_celulares
+      - MYSQL_USER=appuser
+      - MYSQL_PASSWORD=apppassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app_network
+
+
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
