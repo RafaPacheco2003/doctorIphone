@@ -1,0 +1,17 @@
+RewriteEngine On
+
+# Redirigir /dashboard a /view/admin/dashboard.php
+RewriteRule ^dashboard/?$ /view/admin/dashboard.php [L]
+
+# Redirigir /home a /view/home/home.php
+RewriteRule ^home/?$ /view/home/home.php [L]
+
+# Remover la extensión .php de las URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+# Redirigir todas las solicitudes a index.php si el archivo no existe
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]

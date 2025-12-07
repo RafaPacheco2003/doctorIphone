@@ -4,6 +4,17 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 RUN a2enmod rewrite
 
+# Configurar Apache para permitir .htaccess
+RUN echo '<Directory /var/www/html>\n\
+    Options Indexes FollowSymLinks\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>' > /etc/apache2/conf-available/override.conf \
+    && a2enconf override
+
+# Copiar .htaccess al contenedor
+COPY .htaccess /var/www/html/.htaccess
+
 RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80

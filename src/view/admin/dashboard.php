@@ -1,18 +1,6 @@
 <?php
-// Configuración y conexión a la base de datos
-require_once __DIR__ . '/../../repositories/UsuarioRepository.php';
-require_once __DIR__ . '/../../repositories/CitaRepository.php';
-
-// Obtener datos para el dashboard
-$usuarioRepo = new UsuarioRepository();
-$usuarios = $usuarioRepo->findAll();
-$totalUsuarios = count($usuarios);
-
-// Datos de ejemplo (puedes conectar con repositorios reales)
-$citasHoy = 12;
-$reparacionesActivas = 8;
-$ingresosMes = 45200;
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,159 +8,178 @@ $ingresosMes = 45200;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin - Doctor Phone</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="bg-gray-100">
-    
-    <!-- Navbar -->
-    <nav class="bg-blue-600 text-white shadow-lg">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold">📱 Doctor Phone Admin</h1>
-            <div class="flex items-center gap-4">
-                <span>Admin: <strong>Juan Pérez</strong></span>
-                <a href="#" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded">
-                    Cerrar Sesión
-                </a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Main Container -->
-    <div class="container mx-auto px-4 py-8">
-        
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-500 text-sm">Total Usuarios</p>
-                        <p class="text-3xl font-bold text-blue-600"><?php echo $totalUsuarios; ?></p>
-                    </div>
-                    <div class="bg-blue-100 p-3 rounded-full">
-                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+<body>
 
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-500 text-sm">Citas Hoy</p>
-                        <p class="text-3xl font-bold text-green-600"><?php echo $citasHoy; ?></p>
-                    </div>
-                    <div class="bg-green-100 p-3 rounded-full">
-                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+<header class="shadow bg-white">
+    <div class="container mx-auto py-4 px-4 flex justify-between items-center">
+        <div class="flex items-center gap-6">
+            <h1 class="text-2xl font-bold">📱 Dr. <span class="text-red-600">iPhone</span></h1>
 
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-500 text-sm">Reparaciones</p>
-                        <p class="text-3xl font-bold text-yellow-600"><?php echo $reparacionesActivas; ?></p>
-                    </div>
-                    <div class="bg-yellow-100 p-3 rounded-full">
-                        <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-lg shadow p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-500 text-sm">Ingresos Mes</p>
-                        <p class="text-3xl font-bold text-purple-600">$<?php echo number_format($ingresosMes, 0); ?></p>
-                    </div>
-                    <div class="bg-purple-100 p-3 rounded-full">
-                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#" class="text-gray-700 text-sm hover:text-gray-900">Inicio</a></li>
+                    <li><a href="#" class="text-gray-700 text-sm hover:text-gray-900">Servicios</a></li>
+                    <li><a href="#" class="text-gray-700 text-sm hover:text-gray-900">Modelos</a></li>
+                </ul>
+            </nav>
         </div>
 
-        <!-- Main Content -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            <!-- Usuarios Recientes -->
-            <div class="lg:col-span-2 bg-white rounded-lg shadow">
-                <div class="p-6 border-b border-gray-200">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-bold text-gray-800">Usuarios Recientes</h2>
-                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                            + Nuevo Usuario
-                        </a>
-                    </div>
+        <div class="flex items-center gap-6">
+            <div class="flex items-center gap-2">
+                <i class="fa-regular fa-user text-gray-700 text-base"></i>
+                <span class="text-sm text-gray-800">Rodrigo Chi</span>
+            </div>
+
+            <a href="#" class="text-sm bg-white hover:bg-gray-200 text-gray-800 px-3 py-1 border border-gray-300 rounded-lg flex items-center gap-2">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Salir
+            </a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="container mx-auto mt-8 px-4">
+        <h1 class="text-xl font-bold mb-6">Panel de Administración</h1>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+            <div class="bg-gray-50 p-4 rounded-lg shadow border border-gray-100 flex items-center gap-4">
+                <div class="p-3 bg-blue-100 text-blue-600 rounded-full">
+                    <i class="fa-solid fa-screwdriver-wrench text-xl"></i>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Rol</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200">
-                            <?php foreach (array_slice($usuarios, 0, 5) as $usuario): ?>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-sm text-gray-900"><?php echo $usuario->getId(); ?></td>
-                                <td class="px-6 py-4 text-sm text-gray-900"><?php echo htmlspecialchars($usuario->getNombre()); ?></td>
-                                <td class="px-6 py-4 text-sm text-gray-600"><?php echo htmlspecialchars($usuario->getEmail()); ?></td>
-                                <td class="px-6 py-4">
-                                    <?php if ($usuario->getRol() === 'admin'): ?>
-                                        <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">Admin</span>
-                                    <?php else: ?>
-                                        <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Cliente</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td class="px-6 py-4 text-sm">
-                                    <a href="#" class="text-blue-600 hover:text-blue-800 mr-3">Editar</a>
-                                    <a href="#" class="text-red-600 hover:text-red-800">Eliminar</a>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                <div>
+                    <h2 class="text-lg font-semibold">Total Reparaciones</h2>
+                    <p class="text-3xl font-bold text-blue-600">150</p>
                 </div>
             </div>
 
-            <!-- Citas Pendientes -->
-            <div class="bg-white rounded-lg shadow">
-                <div class="p-6 border-b border-gray-200">
-                    <h2 class="text-xl font-bold text-gray-800">Citas Pendientes</h2>
+            <div class="bg-gray-50 p-4 rounded-lg shadow border border-gray-100 flex items-center gap-4">
+                <div class="p-3 bg-yellow-100 text-yellow-600 rounded-full">
+                    <i class="fa-solid fa-clock text-xl"></i>
                 </div>
-                <div class="p-6">
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-yellow-500 bg-yellow-50 p-4 rounded">
-                            <p class="font-semibold text-gray-800">Juan Pérez</p>
-                            <p class="text-sm text-gray-600">Cambio de pantalla</p>
-                            <p class="text-xs text-gray-500 mt-2">Hoy - 14:30</p>
-                        </div>
-                        <div class="border-l-4 border-green-500 bg-green-50 p-4 rounded">
-                            <p class="font-semibold text-gray-800">Ana Martínez</p>
-                            <p class="text-sm text-gray-600">Cambio de batería</p>
-                            <p class="text-xs text-gray-500 mt-2">Hoy - 16:00</p>
-                        </div>
-                        <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded">
-                            <p class="font-semibold text-gray-800">Pedro Ruiz</p>
-                            <p class="text-sm text-gray-600">Diagnóstico</p>
-                            <p class="text-xs text-gray-500 mt-2">Mañana - 10:00</p>
-                        </div>
-                    </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Pendientes</h2>
+                    <p class="text-3xl font-bold text-yellow-600">45</p>
                 </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg shadow border border-gray-100 flex items-center gap-4">
+                <div class="p-3 bg-green-100 text-green-600 rounded-full">
+                    <i class="fa-solid fa-circle-check text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Completadas</h2>
+                    <p class="text-3xl font-bold text-green-600">105</p>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg shadow border border-gray-100 flex items-center gap-4">
+                <div class="p-3 bg-purple-100 text-purple-600 rounded-full">
+                    <i class="fa-solid fa-mobile-screen text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold">Equipos Recibidos</h2>
+                    <p class="text-3xl font-bold text-purple-600">20</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 mb-12">
+            <div class="flex space-x-4 border-b">
+                <button class="tab px-4 py-2 text-gray-500 border-b-2 border-transparent" onclick="cambiarTab(0)">Gestión de Citas</button>
+                <button class="tab px-4 py-2 text-gray-500 border-b-2 border-transparent" onclick="cambiarTab(1)">Gestión de Usuarios</button>
+                <button class="tab px-4 py-2 text-gray-500 border-b-2 border-transparent" onclick="cambiarTab(2)">Gestión de Modelos</button>
+            </div>
+
+            <div class="contenido w-full overflow-x-auto mt-6">
+                <table class="table-fixed w-full text-sm">
+                    <thead class="bg-gray-100 text-left [&>tr>th]:py-3 [&>tr>th]:px-2">
+                        <tr>
+                            <th class="text-gray-500">Cliente</th>
+                            <th class="text-gray-500">Dispositivo</th>
+                            <th class="text-gray-500">Fecha</th>
+                            <th class="text-gray-500">Estado</th>
+                            <th class="text-gray-500 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="[&>tr>td]:py-3 [&>tr>td]:px-2">
+                        <tr class="hover:bg-gray-50">
+                            <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+                            <td>Malcolm Lockyer</td>
+                            <td>1961</td>
+                            <td><span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Error</span></td>
+                            <td class="text-right"><i class="fa-solid fa-eye text-gray-400"></i></td>
+                        </tr>
+
+                        <tr class="hover:bg-gray-50">
+                            <td>Witchy Woman</td>
+                            <td>The Eagles</td>
+                            <td>1972</td>
+                            <td><span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">Pendiente</span></td>
+                            <td class="text-right"><i class="fa-solid fa-eye text-gray-400"></i></td>
+                        </tr>
+
+                        <tr class="hover:bg-gray-50">
+                            <td>Shining Star</td>
+                            <td>Earth, Wind, and Fire</td>
+                            <td>1975</td>
+                            <td><span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full">Completado</span></td>
+                            <td class="text-right"><i class="fa-solid fa-eye text-gray-400"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="contenido hidden w-full overflow-x-auto mt-6">
+                <table class="table-fixed w-full text-sm">
+                    <thead class="bg-gray-100 text-left [&>tr>th]:py-3 [&>tr>th]:px-2">
+                        <tr>
+                            <th class="text-gray-500">Usuario</th>
+                            <th class="text-gray-500">Teléfono</th>
+                            <th class="text-gray-500">Correo</th>
+                            <th class="text-gray-500">Rol</th>
+                            <th class="text-gray-500 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="[&>tr>td]:py-3 [&>tr>td]:px-2">
+                        <tr class="hover:bg-gray-50">
+                            <td>Juan Perez</td>
+                            <td>555-1234</td>
+                            <td class="break-words whitespace-normal">juan.perez@example.com</td>
+                            <td>Admin</td>
+                            <td class="text-right"><i class="fa-solid fa-eye text-gray-400"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="contenido hidden mt-6">
+                Gestión de Modelos
             </div>
         </div>
     </div>
+</main>
+
+<script>
+    function cambiarTab(index) {
+        const tabs = document.querySelectorAll('.tab');
+        const contenidos = document.querySelectorAll('.contenido');
+
+        tabs.forEach(t => t.classList.remove('text-red-600', 'border-red-600'));
+        contenidos.forEach(c => c.classList.add('hidden'));
+
+        tabs[index].classList.add('text-red-600', 'border-red-600');
+        contenidos[index].classList.remove('hidden');
+    }
+
+    cambiarTab(0);
+</script>
 
 </body>
 </html>
