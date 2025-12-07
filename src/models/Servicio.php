@@ -4,10 +4,10 @@ require_once __DIR__ . '/BaseModel.php';
 
 class Servicio extends BaseModel
 {
-    private $id;
-    private $nombre;
-    private $descripcion;
-    private $precio_estimado;
+    protected $id;
+    protected $nombre;
+    protected $descripcion;
+    protected $precio_estimado;
 
     // Getters
     public function getId() {

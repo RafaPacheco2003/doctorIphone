@@ -16,14 +16,14 @@ abstract class BaseRepository
     public function findAll()
     {
         $sql = "SELECT * FROM {$this->table}";
-        return $this->db->query($sql)->fetchAll();
+        return $this->db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Obtener un registro por ID
     public function findById($id)
     {
         $sql = "SELECT * FROM {$this->table} WHERE id = :id";
-        return $this->db->query($sql, ['id' => $id])->fetch();
+        return $this->db->query($sql, ['id' => $id])->fetch(PDO::FETCH_ASSOC);
     }
 
     // Crear un nuevo registro

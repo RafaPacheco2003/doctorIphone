@@ -4,31 +4,71 @@ require_once __DIR__ . '/Config.php';
 
 class Database
 {
-    private static $conexion = null;
+    private static $instance = null;
+    private $conexion;
 
-    // Obtener la conexión
-    public static function conectar()
+    private function __construct()
     {
-        if (self::$conexion === null) {
-            try {
-                $host = Config::$db_host;
-                $dbname = Config::$db_name;
-                $user = Config::$db_user;
-                $password = Config::$db_password;
+        try {
+            $host = Config::$db_host;
+            $dbname = Config::$db_name;
+            $user = Config::$db_user;
+            $password = Config::$db_password;
 
-                self::$conexion = new PDO(
-                    "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
-                    $user,
-                    $password
-                );
-                
-                self::$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                
-            } catch (PDOException $e) {
-                die("Error de conexión: " . $e->getMessage());
-            }
+            $this->conexion = new PDO(
+                "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+                $user,
+                $password
+            );
+            
+            $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+        } catch (PDOException $e) {
+            die("Error de conexión: " . $e->getMessage());
+        }
+    }
+
+    // Singleton pattern
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
         
-        return self::$conexion;
+        return self::$instance;
+    }
+
+    // Obtener la conexión PDO
+    public static function conectar()
+    {
+        return self::getInstance()->getConnection();
+    }
+
+    // Método para obtener la conexión
+    public function getConnection()
+    {
+        return $this->conexion;
+    }
+
+    // Ejecutar consultas
+    public function query($sql, $params = [])
+    {
+        try {
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            throw new Exception("Error en la consulta: " . $e->getMessage());
+        }
+    }
+
+    // Prevenir clonación
+    private function __clone() {}
+
+    // Prevenir deserialización
+    public function __wakeup()
+    {
+        throw new Exception("No se puede deserializar un singleton");
     }
 }
+

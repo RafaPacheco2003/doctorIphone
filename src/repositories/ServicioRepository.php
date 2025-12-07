@@ -1,12 +1,13 @@
 <?php
 
+require_once __DIR__ . '/BaseRepository.php';
+require_once __DIR__ . '/../models/Servicio.php';
 
-class ServicioRepository extends BaseRepository{
-
+class ServicioRepository extends BaseRepository
+{
     protected $table = 'servicios';
 
-
-     public function findAll()
+    public function findAll()
     {
        $data = parent::findAll();
         $servicios = [];

@@ -1,4 +1,18 @@
 <?php
+
+require_once __DIR__ . '/../../controllers/ServicioController.php';
+
+try {
+    $servicioController = new ServicioController();
+    $servicios = $servicioController->getAll();
+    
+    // Limitar a 3 servicios para mostrar en el home
+    $serviciosLimitados = array_slice($servicios, 0, 3);
+} catch (Exception $e) {
+    $serviciosLimitados = [];
+    error_log("Error al cargar servicios: " . $e->getMessage());
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -110,29 +124,19 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-10">
 
-                <div class="bg-white p-8 shadow border border-gray-200 rounded-xl hover:border-red-600 transition">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-xl font-semibold">Reparación de Pantalla</h4>
-                        <p class="text-red-600 font-bold text-sm">$500</p>
-                    </div>
-                    <p class="text-gray-700">Cambio de pantallas rotas o dañadas con repuestos originales.</p>
-                </div>
-
-                <div class="bg-white p-8 shadow border border-gray-200 rounded-xl hover:border-red-600 transition">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-xl font-semibold">Reemplazo de Batería</h4>
-                        <p class="text-red-600 font-bold text-sm">$200</p>
-                    </div>
-                    <p class="text-gray-700">Sustitución de baterías para mejorar el rendimiento y duración.</p>
-                </div>
-
-                <div class="bg-white p-8 shadow border border-gray-200 rounded-xl hover:border-red-600 transition">
-                    <div class="flex justify-between items-center mb-4">
-                        <h4 class="text-xl font-semibold">Reparación de Conectividad</h4>
-                        <p class="text-red-600 font-bold text-sm">$150</p>
-                    </div>
-                    <p class="text-gray-700">Solución de problemas con Wi-Fi, Bluetooth y redes móviles.</p>
-                </div>
+                <?php if (!empty($serviciosLimitados)): ?>
+                    <?php foreach ($serviciosLimitados as $servicio): ?>
+                        <div class="bg-white p-8 shadow border border-gray-200 rounded-xl hover:border-red-600 transition">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="text-xl font-semibold"><?= htmlspecialchars($servicio->getNombre()) ?></h4>
+                                <p class="text-red-600 font-bold text-sm">$<?= number_format($servicio->getPrecioEstimado(), 0) ?></p>
+                            </div>
+                            <p class="text-gray-700"><?= htmlspecialchars($servicio->getDescripcion()) ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-gray-700">No hay servicios disponibles en este momento.</p>
+                <?php endif; ?>
 
             </div>
 
@@ -207,7 +211,6 @@
 <footer class="bg-red-600 text-white py-12">
     <div class="container mx-auto px-6">
 
-        <!-- Contenido principal -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
 
             <!-- Empresa -->
@@ -247,7 +250,6 @@
             </div>
         </div>
 
-        <!-- Línea de separación -->
         <div class="border-t border-red-400 mt-10 pt-6 text-center">
             <p class="text-gray-200 text-sm">
                 © 2024 Doctor Phone — Todos los derechos reservados.
