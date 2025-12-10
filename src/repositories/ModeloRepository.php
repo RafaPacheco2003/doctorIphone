@@ -1,29 +1,29 @@
 <?php
 
 require_once __DIR__ . '/BaseRepository.php';
-require_once __DIR__ . '/../models/Servicio.php';
+require_once __DIR__ . '/../models/ModeloCelular.php';
 
-class ServicioRepository extends BaseRepository
+class ModeloRepository extends BaseRepository
 {
-    protected $table = 'servicios';
-
+    protected $table = 'modelos_celulares';
+    
     public function findAll()
     {
        $data = parent::findAll();
-        $servicios = [];
+        $modelos = [];
         
         foreach ($data as $row) {
-            $servicios[] = new Servicio($row);
+            $modelos[] = new ModeloCelular($row);
         }
         
-        return $servicios;
+        return $modelos;
     }
 
     public function findById($id)
     {
     
         $data = parent::findById($id);
-        return $data ? new Servicio($data) : null;
+        return $data ? new ModeloCelular($data) : null;
     }
 
     public function create($data)
@@ -40,10 +40,7 @@ class ServicioRepository extends BaseRepository
     {
         return parent::delete($id);
     }
-
-
-
+    
 }
-
 
 ?>

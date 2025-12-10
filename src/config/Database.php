@@ -62,6 +62,23 @@ class Database
         }
     }
 
+    // Ejecutar consultas sin retorno (INSERT, UPDATE, DELETE)
+    public function execute($sql, $params = [])
+    {
+        try {
+            $stmt = $this->conexion->prepare($sql);
+            return $stmt->execute($params);
+        } catch (PDOException $e) {
+            throw new Exception("Error al ejecutar: " . $e->getMessage());
+        }
+    }
+
+    // Obtener el último ID insertado
+    public function lastInsertId()
+    {
+        return $this->conexion->lastInsertId();
+    }
+
     // Prevenir clonación
     private function __clone() {}
 

@@ -67,6 +67,7 @@ abstract class BaseRepository
         if ($where) {
             $sql .= " WHERE {$where}";
         }
-        return $this->db->query($sql, $params)->fetch()['total'];
+        $result = $this->db->query($sql, $params)->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
     }
 }
