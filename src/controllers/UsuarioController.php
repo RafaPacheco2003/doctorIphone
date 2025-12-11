@@ -1,85 +1,100 @@
 <?php
 
 require_once __DIR__ . '/../services/UsuarioService.php';
+require_once __DIR__ . '/../config/JwtToken.php';
 
 class UsuarioController
 {
     private $usuarioService;
 
-    public function __construct()
+    public function __construct(?UsuarioService $usuarioService = null)
     {
-        $this->usuarioService = new UsuarioService();
+        $this->usuarioService = $usuarioService ?? new UsuarioService();
     }
 
-    // Obtener todos los usuarios
-    public function index()
+    public function crearTokenYCookie($usuario)
     {
-        $usuarios = $this->usuarioService->getAll();
-        $this->response(array_map(fn($u) => $u->toArray(), $usuarios));
-    }
-
-    // Obtener usuario por ID
-    public function show($id)
-    {
-        $usuario = $this->usuarioService->getById($id);
+        $payload = [
+            'id' => $usuario->getId(),
+            'nombre' => $usuario->getNombre(),
+            'email' => $usuario->getEmail(),
+            'rol' => $usuario->getRol(),
+            'exp' => time() + (86400 * 7)
+        ];
         
-        if (!$usuario) {
-            $this->response(['error' => 'Usuario no encontrado'], 404);
-            return;
+        $token = JwtToken::encode($payload);
+        
+        setcookie('auth_token', $token, time() + (86400 * 7), '/', '', false, true);
+        
+        return $token;
+    }
+    
+    public function verificarToken()
+    {
+        if (!isset($_COOKIE['auth_token'])) {
+            return null;
         }
-
-        $this->response($usuario->toArray());
+        
+        $payload = JwtToken::decode($_COOKIE['auth_token']);
+        
+        if (!$payload || $payload['exp'] < time()) {
+            $this->cerrarSesion();
+            return null;
+        }
+        
+        return $payload;
+    }
+    
+    public function cerrarSesion()
+    {
+        setcookie('auth_token', '', time() - 3600, '/', '', false, true);
+        session_destroy();
     }
 
-    // Crear usuario
-    public function store($data)
+    public function getAll()
     {
-        $id = $this->usuarioService->registrar(
+        return $this->usuarioService->getAll();
+    }
+
+    public function getById($id)
+    {
+        return $this->usuarioService->getById($id);
+    }
+
+    public function registrarUsuario($data)
+    {
+        return $this->usuarioService->registrar(
             $data['nombre'] ?? '',
             $data['email'] ?? '',
             $data['telefono'] ?? '',
             $data['password'] ?? '',
             $data['rol'] ?? 'cliente'
         );
-
-        $this->response(['id' => $id, 'message' => 'Usuario creado'], 201);
     }
 
-    // Actualizar usuario
-    public function update($id, $data)
+    public function loginUsuario($email, $password)
     {
-        $this->usuarioService->actualizar(
+        return $this->usuarioService->login($email, $password);
+    }
+
+    public function actualizarUsuario($id, $data)
+    {
+        return $this->usuarioService->actualizar(
             $id,
             $data['nombre'] ?? '',
             $data['email'] ?? '',
             $data['telefono'] ?? '',
             $data['rol'] ?? null
         );
-
-        $this->response(['message' => 'Usuario actualizado']);
     }
 
-    // Eliminar usuario
-    public function delete($id)
+    public function eliminarUsuario($id)
     {
-        $this->usuarioService->eliminar($id);
-        $this->response(['message' => 'Usuario eliminado']);
+        return $this->usuarioService->eliminar($id);
     }
 
-    // Cambiar contraseña
-    public function cambiarPassword($id, $data)
+    public function cambiarPasswordUsuario($id, $nueva_password)
     {
-        $this->usuarioService->cambiarContrasena($id, $data['nueva_password'] ?? '');
-        $this->response(['message' => 'Contraseña actualizada']);
-    }
-
-    // Respuesta JSON
-    private function response($data, $status = 200)
-    {
-        http_response_code($status);
-        header('Content-Type: application/json');
-        echo json_encode($data);
+        return $this->usuarioService->cambiarContrasena($id, $nueva_password);
     }
 }
-?>
-

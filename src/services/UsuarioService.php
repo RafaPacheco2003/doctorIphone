@@ -9,7 +9,6 @@ class UsuarioService extends BaseServices {
         parent::__construct(new UsuarioRepository());
     }
 
-    // Registrar usuario
     public function registrar($nombre, $email, $telefono, $password, $rol = 'cliente')
     {
         if (empty($email) || empty($password)) {
@@ -31,7 +30,6 @@ class UsuarioService extends BaseServices {
         return $this->repository->create($data);
     }
 
-    // Login
     public function login($email, $password)
     {
         $usuario = $this->repository->findByEmail($email);
@@ -43,7 +41,6 @@ class UsuarioService extends BaseServices {
         return $usuario;
     }
 
-    // Actualizar usuario
     public function actualizar($id, $nombre, $email, $telefono, $rol = null)
     {
         $usuario = $this->repository->findById($id);
@@ -65,7 +62,6 @@ class UsuarioService extends BaseServices {
         return $this->repository->update($id, $data);
     }
 
-    // Cambiar contraseña
     public function cambiarContrasena($id, $nueva)
     {
         if (strlen($nueva) < 6) {
@@ -79,7 +75,6 @@ class UsuarioService extends BaseServices {
         return $this->repository->update($id, $data);
     }
 
-    // Eliminar
     public function eliminar($id)
     {
         return $this->repository->delete($id);

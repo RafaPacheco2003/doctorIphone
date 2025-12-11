@@ -37,7 +37,6 @@ class ModeloCelular extends BaseModel
         return $this;
     }
 
-    // Método para obtener nombre completo
     public function getNombreCompleto() {
         return $this->marca . ' ' . $this->modelo;
     }

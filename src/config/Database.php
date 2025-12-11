@@ -38,19 +38,16 @@ class Database
         return self::$instance;
     }
 
-    // Obtener la conexión PDO
     public static function conectar()
     {
         return self::getInstance()->getConnection();
     }
 
-    // Método para obtener la conexión
     public function getConnection()
     {
         return $this->conexion;
     }
 
-    // Ejecutar consultas
     public function query($sql, $params = [])
     {
         try {
@@ -62,7 +59,6 @@ class Database
         }
     }
 
-    // Ejecutar consultas sin retorno (INSERT, UPDATE, DELETE)
     public function execute($sql, $params = [])
     {
         try {
@@ -73,16 +69,13 @@ class Database
         }
     }
 
-    // Obtener el último ID insertado
     public function lastInsertId()
     {
         return $this->conexion->lastInsertId();
     }
 
-    // Prevenir clonación
     private function __clone() {}
 
-    // Prevenir deserialización
     public function __wakeup()
     {
         throw new Exception("No se puede deserializar un singleton");

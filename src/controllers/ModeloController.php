@@ -16,61 +16,25 @@ class ModeloController
         return $this->modeloService->getAll();
     }
 
-    public function index()
+    public function getById($id)
     {
-        $modelos = $this->modeloService->getAll();
-        $this->response(array_map(fn($m) => $m->toArray(), $modelos));
+        return $this->modeloService->getById($id);
     }
 
-    public function show($id)
+    public function createModelo($data)
     {
-        $modelo = $this->modeloService->getById($id);
-        if ($modelo) {
-            $this->response($modelo->toArray());
-        } else {
-            http_response_code(404);
-            $this->response(['error' => 'Modelo no encontrado']);
-        }
+        return $this->modeloService->create($data);
     }
 
-    public function store($data)
+    public function actualizarModelo($id, $data)
     {
-        $result = $this->modeloService->create($data);
-        if ($result) {
-            http_response_code(201);
-            $this->response(['success' => true, 'message' => 'Modelo creado exitosamente']);
-        } else {
-            http_response_code(500);
-            $this->response(['error' => 'Error al crear el modelo']);
-        }
+        return $this->modeloService->update($id, $data);
     }
 
-    public function updateModelo($id, $data)
+    public function eliminarModelo($id)
     {
-        $result = $this->modeloService->update($id, $data);
-        if ($result) {
-            $this->response(['success' => true, 'message' => 'Modelo actualizado exitosamente']);
-        } else {
-            http_response_code(500);
-            $this->response(['error' => 'Error al actualizar el modelo']);
-        }
+        return $this->modeloService->delete($id);
     }
 
-    public function destroy($id)
-    {
-        $result = $this->modeloService->delete($id);
-        if ($result) {
-            $this->response(['success' => true, 'message' => 'Modelo eliminado exitosamente']);
-        } else {
-            http_response_code(500);
-            $this->response(['error' => 'Error al eliminar el modelo']);
-        }
-    }
-
-    private function response($data)
-    {
-        header('Content-Type: application/json');
-        echo json_encode($data);
-    }
 }
 ?>

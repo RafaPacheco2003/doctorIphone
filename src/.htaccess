@@ -4,8 +4,15 @@ RewriteRule ^dashboard/?$ /view/admin/dashboard.php [L]
 
 RewriteRule ^home/?$ /view/home/home.php [L]
 
-
 RewriteRule ^schedule/?$ /view/schedule/schedule.php [L]
+
+RewriteRule ^login/?$ /view/auth/login.php [L]
+
+RewriteRule ^register/?$ /view/auth/register.php [L]
+
+RewriteRule ^logout/?$ /view/auth/logout.php [L]
+
+RewriteRule ^api/modelos/?$ /api/modelos.php [L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f

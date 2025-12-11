@@ -70,7 +70,6 @@ class Reparacion extends BaseModel
         return $this;
     }
 
-    // Métodos de utilidad para verificar estado
     public function isRecibido() {
         return $this->estado === 'recibido';
     }
@@ -117,7 +116,6 @@ class Reparacion extends BaseModel
         return $this;
     }
 
-    // Agregar nota
     public function agregarNota($nueva_nota) {
         if ($this->notas) {
             $this->notas .= "\n" . date('Y-m-d H:i:s') . ": " . $nueva_nota;
@@ -127,7 +125,6 @@ class Reparacion extends BaseModel
         return $this;
     }
 
-    // Obtener el estado en formato legible
     public function getEstadoLegible() {
         $estados = [
             'recibido' => 'Recibido',

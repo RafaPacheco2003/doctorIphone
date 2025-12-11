@@ -59,25 +59,6 @@ SELECT * FROM (SELECT 'Apple', 'iPhone X') AS tmp
 WHERE NOT EXISTS (SELECT 1 FROM modelos_celulares WHERE marca = 'Apple' AND modelo = 'iPhone X')
 LIMIT 1;
 
-INSERT INTO modelos_celulares (marca, modelo)
-SELECT * FROM (SELECT 'Samsung', 'Galaxy S21') AS tmp
-WHERE NOT EXISTS (SELECT 1 FROM modelos_celulares WHERE marca = 'Samsung' AND modelo = 'Galaxy S21')
-LIMIT 1;
-
-INSERT INTO modelos_celulares (marca, modelo)
-SELECT * FROM (SELECT 'Samsung', 'Galaxy A52') AS tmp
-WHERE NOT EXISTS (SELECT 1 FROM modelos_celulares WHERE marca = 'Samsung' AND modelo = 'Galaxy A52')
-LIMIT 1;
-
-INSERT INTO modelos_celulares (marca, modelo)
-SELECT * FROM (SELECT 'Xiaomi', 'Redmi Note 10') AS tmp
-WHERE NOT EXISTS (SELECT 1 FROM modelos_celulares WHERE marca = 'Xiaomi' AND modelo = 'Redmi Note 10')
-LIMIT 1;
-
-INSERT INTO modelos_celulares (marca, modelo)
-SELECT * FROM (SELECT 'Motorola', 'Moto G9 Power') AS tmp
-WHERE NOT EXISTS (SELECT 1 FROM modelos_celulares WHERE marca = 'Motorola' AND modelo = 'Moto G9 Power')
-LIMIT 1;
 
 CREATE TABLE IF NOT EXISTS citas (
     id INT AUTO_INCREMENT PRIMARY KEY,

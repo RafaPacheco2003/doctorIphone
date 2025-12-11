@@ -1,12 +1,15 @@
 <?php
+session_start();
 
+require_once __DIR__ . '/../../middleware/AuthMiddleware.php';
 require_once __DIR__ . '/../../controllers/ServicioController.php';
+
+AuthMiddleware::requiereAutenticacion();
 
 try {
     $servicioController = new ServicioController();
     $servicios = $servicioController->getAll();
     
-    // Limitar a 3 servicios para mostrar en el home
     $serviciosLimitados = array_slice($servicios, 0, 3);
 } catch (Exception $e) {
     $serviciosLimitados = [];
@@ -26,6 +29,8 @@ try {
 
 <body class="bg-white text-gray-900">
 
+<?php include __DIR__ . '/../components/header/header.php'; ?>
+
 <main>
 
     <section class="py-24">
@@ -42,11 +47,11 @@ try {
                 </p>
 
                 <div class="flex gap-4">
-                    <a href="#" class="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition">
+                    <a href="/schedule" class="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition">
                         Agendar cita
                     </a>
 
-                    <a href="#" class="bg-gray-200 text-gray-800 px-8 py-3 rounded-lg hover:bg-gray-300 transition">
+                    <a href="#servicios" class="bg-gray-200 text-gray-800 px-8 py-3 rounded-lg hover:bg-gray-300 transition">
                         Servicios
                     </a>
                 </div>
@@ -113,7 +118,7 @@ try {
     </section>
 
 
-    <section class="py-16">
+    <section class="py-16" id="servicios">
         <div class="container mx-auto px-6 max-w-6xl">
 
             <h3 class="text-4xl font-bold mb-4">Servicios</h3>
@@ -149,8 +154,23 @@ try {
         </div>
     </section>
 
+    <section class="py-16 bg-white" id="video-section">
+        <div class="container mx-auto px-6 max-w-6xl">
 
-    <section class="bg-gray-100 py-16">
+            <h3 class="text-4xl font-bold mb-6">Cómo trabajamos</h3>
+
+            <p class="text-gray-700 mb-6">Mira este breve video para entender mejor nuestro proceso de recepción y reparación. Si tienes dudas, contáctanos.</p>
+
+            <div class="rounded-xl overflow-hidden shadow-sm">
+                <div class="relative" style="padding-top:56.25%">
+                    <iframe id="youtube-video" class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/kItELDIKeQw?enablejsapi=1&mute=1" title="Video - Cómo trabajamos" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="bg-gray-100 py-16" id="ubicacion">
         <div class="container mx-auto px-6 max-w-6xl">
 
             <h3 class="text-4xl font-bold mb-10">Ubicación</h3>
@@ -213,7 +233,6 @@ try {
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-            <!-- Empresa -->
             <div>
                 <h3 class="text-lg font-semibold mb-3">Doctor Phone</h3>
                 <p class="text-gray-100 text-sm leading-relaxed">
@@ -221,19 +240,17 @@ try {
                 </p>
             </div>
 
-            <!-- Enlaces -->
             <div>
                 <h3 class="text-lg font-semibold mb-3">Enlaces</h3>
                 <ul class="space-y-2 text-gray-100 text-sm">
-                    <li><a href="#" class="hover:underline">Servicios</a></li>
-                    <li><a href="#" class="hover:underline">Agendar cita</a></li>
-                    <li><a href="#" class="hover:underline">Ubicación</a></li>
-                    <li><a href="#" class="hover:underline">Contacto</a></li>
+                    <li><a href="#servicios" class="hover:underline">Servicios</a></li>
+                    <li><a href="/schedule" class="hover:underline">Agendar cita</a></li>
+                    <li><a href="#ubicacion" class="hover:underline">Ubicación</a></li>
+                    <li><a href="#contacto" class="hover:underline">Contacto</a></li>
                 </ul>
             </div>
 
-            <!-- Contacto -->
-            <div>
+            <div id="contacto">
                 <h3 class="text-lg font-semibold mb-3">Contacto</h3>
 
                 <p class="text-sm text-gray-100 mb-2">
@@ -263,6 +280,39 @@ try {
     </div>
 </footer>
 
+<script>
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('youtube-video', {
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        const videoSection = document.getElementById('video-section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    player.playVideo();
+                } else {
+                    player.pauseVideo();
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        observer.observe(videoSection);
+    }
+</script>
 
 </body>
 </html>

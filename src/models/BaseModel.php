@@ -1,10 +1,8 @@
 <?php
 
-// Clase base para todos los modelos
 class BaseModel
 {
-    // Constructor genérico que acepta un array de datos
-    public function __construct($data = [])
+    public function __construct(array $data = [])
     {
         if (!empty($data)) {
             $this->cargarDatos($data);
@@ -51,7 +49,6 @@ class BaseModel
     // Helper: try setter then direct property assignment
     protected function fillAttribute(string $name, $value): void
     {
-        // Build possible setter names (snake_case and camelCase)
         $camel = str_replace('_', '', ucwords($name, '_'));
         $setterVariants = [
             'set' . $camel,
@@ -65,24 +62,20 @@ class BaseModel
             }
         }
 
-        // If property exists on the object, assign directly (works if protected/public)
         if (property_exists($this, $name)) {
             $this->$name = $value;
             return;
         }
 
-        // Fallback: try setting camelCase property (some models may use camelCase)
         $camelProp = lcfirst($camel);
         if (property_exists($this, $camelProp)) {
             $this->$camelProp = $value;
             return;
         }
 
-        // Last resort: create a dynamic public property
         $this->$name = $value;
     }
 
-    // Convertir el modelo a array
     public function toArray()
     {
         $data = [];
@@ -97,7 +90,6 @@ class BaseModel
         return $data;
     }
 
-    // Convertir a JSON
     public function toJson()
     {
         return json_encode($this->toArray());

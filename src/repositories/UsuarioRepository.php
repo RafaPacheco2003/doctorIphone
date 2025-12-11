@@ -53,19 +53,16 @@ class UsuarioRepository extends BaseRepository
         return parent::create($data);
     }
 
-    // Actualizar usuario
     public function update($id, $data)
     {
         return parent::update($id, $data);
     }
 
-    // Eliminar usuario
     public function delete($id)
     {
         return parent::delete($id);
     }
 
-    // Obtener usuarios por rol
     public function findByRol($rol)
     {
         $sql = "SELECT * FROM {$this->table} WHERE rol = :rol";

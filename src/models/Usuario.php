@@ -9,7 +9,8 @@ class Usuario extends BaseModel
     private $email;
     private $telefono;
     private $contrasena;
-    private $rol; // Enum: 'admin' o 'cliente'
+    private $rol;
+    private $fecha_registro;
 
     // Getters
     public function getId() {
@@ -36,7 +37,10 @@ class Usuario extends BaseModel
         return $this->rol;
     }
 
-    // Setters
+    public function getFechaRegistro() {
+        return $this->fecha_creado;
+    }
+
     public function setId($id) {
         $this->id = $id;
         return $this;
@@ -66,6 +70,11 @@ class Usuario extends BaseModel
         if (in_array($rol, ['admin', 'cliente'])) {
             $this->rol = $rol;
         }
+        return $this;
+    }
+
+    public function setFechaRegistro($fecha_registro) {
+        $this->fecha_registro = $fecha_registro;
         return $this;
     }
 

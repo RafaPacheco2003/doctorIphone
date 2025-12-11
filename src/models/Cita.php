@@ -11,10 +11,13 @@ class Cita extends BaseModel
     private $fecha;
     private $hora;
     private $descripcion;
-    private $estado; // Enum: 'pendiente', 'confirmada', 'cancelada'
+    private $estado;
     private $fecha_creada;
+    
+    private $usuario_nombre;
+    private $servicio_nombre;
+    private $modelo_nombre;
 
-    // Getters
     public function getId() {
         return $this->id;
     }
@@ -29,6 +32,18 @@ class Cita extends BaseModel
 
     public function getModeloId() {
         return $this->modelo_id;
+    }
+    
+    public function getUsuarioNombre() {
+        return $this->usuario_nombre;
+    }
+    
+    public function getServicioNombre() {
+        return $this->servicio_nombre;
+    }
+    
+    public function getModeloNombre() {
+        return $this->modelo_nombre;
     }
 
     public function getFecha() {
@@ -51,7 +66,6 @@ class Cita extends BaseModel
         return $this->fecha_creada;
     }
 
-    // Setters
     public function setId($id) {
         $this->id = $id;
         return $this;
@@ -98,8 +112,22 @@ class Cita extends BaseModel
         $this->fecha_creada = $fecha_creada;
         return $this;
     }
+    
+    public function setUsuarioNombre($usuario_nombre) {
+        $this->usuario_nombre = $usuario_nombre;
+        return $this;
+    }
+    
+    public function setServicioNombre($servicio_nombre) {
+        $this->servicio_nombre = $servicio_nombre;
+        return $this;
+    }
+    
+    public function setModeloNombre($modelo_nombre) {
+        $this->modelo_nombre = $modelo_nombre;
+        return $this;
+    }
 
-    // Métodos de utilidad
     public function isPendiente() {
         return $this->estado === 'pendiente';
     }
@@ -122,7 +150,6 @@ class Cita extends BaseModel
         return $this;
     }
 
-    // Obtener fecha y hora formateada
     public function getFechaHoraCompleta() {
         return $this->fecha . ' ' . $this->hora;
     }
